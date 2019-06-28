@@ -1,5 +1,5 @@
 # various XPaths for competition info elements
-COMPETITOR_LIMIT = '//*[@id="registration_requirements_text"]/text()[3]'
+REGISTRATION_REQUIREMENTS = '//*[@id="registration_requirements_text"]'
 COMPETITORS_LIST = '//*[@id="competition-nav"]/div/a[3]'
 COMPETITOR_TABLE_FOOTER = '//*[@id="competition-data"]/div/div[1]/div[2]/div[2]/table/tfoot/tr/td[1]'
 
@@ -26,26 +26,29 @@ class Competition:
         Returns:
             bool -- True if it has been reached, False if not
         """
-        with self.driver as driver:
-            driver.get(self.url)
-            
-            # find the line where the competitor limit is stated
-            competitor_limit_line = driver.find_element_by_xpath(COMPETITOR_LIMIT)
-            competitor_limit = int(competitor_limit_line.split(' ')[-2])
-            # find the link to the competitor list
-            competitor_list_url = driver.find_element_by_xpath(COMPETITORS_LIST).get_attribute('href')
+        self.driver.get(self.url)
+        
+        # find the line where the competitor limit is stated
+        competitor_limit_line = [
+            line for line in self.driver.find_element_by_xpath(REGISTRATION_REQUIREMENTS).text.split('\n') 
+                if 'There is a competitor limit of' in line
+                ][0].strip()
 
-            driver.get(competitor_list_url)
+        competitor_limit = int(competitor_limit_line.split(' ')[-2])
+        # find the link to the competitor list
+        competitor_list_url = self.driver.find_element_by_xpath(COMPETITORS_LIST).get_attribute('href')
 
-            # find bottom text of competitor table
-            table_footer = driver.find_element_by_xpath(COMPETITOR_TABLE_FOOTER).text.strip()
+        self.driver.get(competitor_list_url)
 
-            people = int(table_footer.split(' ')[-2])
+        # find bottom text of competitor table
+        table_footer = self.driver.find_element_by_xpath(COMPETITOR_TABLE_FOOTER).text.strip()
 
-            if people == competitor_limit:
-                return True
-            else:
-                return False
+        people = int(table_footer.split(' ')[-2])
+
+        if people == competitor_limit:
+            return True
+        else:
+            return False
 
 
     @property
