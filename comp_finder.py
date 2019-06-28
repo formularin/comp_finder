@@ -8,6 +8,7 @@ python comp_finder.py state1 [state2 state3 ...]
 
 from selenium.webdriver import Chrome, ChromeOptions
 import os
+import time
 
 PAGE_URL = 'https://www.worldcubeassociation.org/competitions?utf8=%E2%9C%93&region=USA&search=&state=present&year=all+years&from_date=&to_date=&delegate=&display=list'
 cwd = os.getcwd()
@@ -29,3 +30,6 @@ if states == []:
 op = ChromeOptions()
 op.add_argument('headless')
 driver = Chrome(f'{cwd}/chromedriver', options=op)
+
+driver.get(PAGE_URL)
+
