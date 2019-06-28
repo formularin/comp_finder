@@ -54,7 +54,15 @@ class Competition:
     @property
     def venue_address(self):
         """Finds address to competition venue"""
-        return ''
+        
+        self.driver.get(self.url)
+
+        # find the link on the page that goes to google maps
+        link = [elem for elem in self.driver.find_elements_by_xpath('//a')
+                if 'google.com/maps' in elem.get_attribute('href')
+                ][0]
+        
+        return link.text
  
 
     @property
