@@ -34,7 +34,13 @@ class TestCompetition(unittest.TestCase):
             self.assertEqual(limit_reached, comp.reached_competitor_limit)
 
     def test_venue_address(self):
-        pass
+        
+        venue_addresses = ['1 University Rd, Boston, MA 02215, USA', 
+                           '1157 State Rte 55, Lagrangeville, NY 12540']
+
+        for venue_address, comp in zip(
+            venue_addresses, test_competitions):
+            self.assertEqual(venue_address, comp.venue_address)
 
     def test_driving_distance(self):
         pass

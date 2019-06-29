@@ -76,3 +76,5 @@ def find_comps():
 
         with open(f'{cwd}/output.txt', 'w+') as f:
             f.write('\n\n'.join([str(i) for i in competitions]))
+
+

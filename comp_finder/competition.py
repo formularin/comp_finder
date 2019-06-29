@@ -1,7 +1,30 @@
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 # various XPaths for competition info elements
 REGISTRATION_REQUIREMENTS = '//*[@id="registration_requirements_text"]'
 COMPETITORS_LIST = '//*[@id="competition-nav"]/div/a[3]'
 COMPETITOR_TABLE_FOOTER = '//*[@id="competition-data"]/div/div[1]/div[2]/div[2]/table/tfoot/tr/td[1]'
+ADDRESS_INPUT = '//*[@id="sb_ifc51"]/input'
+ESTIMATED_TIME = '//*[@id="section-directions-trip-#"]/div[2]/div[1]/div[1]/div[1]/span[1]'
+
+
+def wait_for_element(driver, attribute, attribute_name):
+    """Returns element after waiting for page load"""
+    try:
+        element = WebDriverWait(driver, 10).until(
+            eval(f'EC.presence_of_element_located((By.{attribute_name}, "{attribute}"))')
+        )
+    finally:
+        pass
+
+    try:
+        return element
+    except UnboundLocalError:
+        return False
 
 
 class Competition:
@@ -75,7 +98,65 @@ class Competition:
         Returns:
             str -- hours h minutes min
         """
-        return ''
+        
+        self.driver.get(self.url)
+
+        # link to venue on google maps
+        link = self.driver.find_element_by_text(self.venue_address)
+
+        self.driver.get(link)
+
+        # click directions button
+        directions_button = wait_for_element(self.driver, 'directions', 'TEXT')
+        directions_button.click()
+
+        # send location to address input field
+        input_field = self.driver.find_element_by_xpath(ADDRESS_INPUT)
+        input_field.send_keys(self.location)
+        input_field.send_keys(Keys.ENTER)
+
+        # find estimated times
+        times = []
+        i = 0
+        while True:
+            try:
+                xpath = ESTIMATED_TIME.replace('#', str(i))
+                estimated_time_elem = wait_for_element(
+                    self.driver, xpath, 'XPATH'
+                )
+                times.append(estimated_time_elem.text)
+                i += 1
+            except NoSuchElementException:
+                break
+
+        times_in_minutes = []
+        for time in times:
+            time_in_minutes = 0
+            if 'h' in time:
+                hours_digits = []
+                for char in time:
+                    try:
+                        test_integer = int(char)
+                        hours_digits.append(char)
+                    except ValueError:
+                        break
+                hours = int(''.join(hours_digits))
+                time_in_minutes += 60 * hours
+            if 'min' in time:
+                mins_digits = []
+                for char in time:
+                    try:
+                        test_integer = int(char)
+                        mins_digits.append(char)
+                    except ValueError:
+                        mins_digits.append(char)
+                mins = int(''.join(mins_digits))
+                time_in_minutes += mins
+            times_in_minutes.append(time_in_minutes)
+
+        return times[times_in_minutes.index(min(times_in_minutes))]
+
+
 
     def __str__(self):
         """Creates message containing complete information
@@ -89,7 +170,6 @@ class Competition:
                 self.url,
                 '',
                 f'date: {self.date}',
-                f'location: {self.location}',
                 f'venue: {self.venue} - {self.venue_address}',
                 f'distance: {self.driving_distance}',
             ]
