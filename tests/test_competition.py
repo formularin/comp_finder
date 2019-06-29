@@ -43,11 +43,17 @@ class TestCompetition(unittest.TestCase):
             self.assertEqual(venue_address, comp.venue_address)
 
     def test_driving_distance(self):
-        pass
+        
+        driving_distances = ['6 h 58 min', '5 h']
+
+        for distance, comp in zip(
+            driving_distances, test_competitions):
+            self.assertEqual(distance, comp.driving_distance)
 
     def test_message(self):
         pass
 
 
 if __name__ == '__main__':
-    unittest.main()
+    c = TestCompetition()
+    c.test_driving_distance()

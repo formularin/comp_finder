@@ -3,28 +3,28 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.remote.webelement import WebElement
 
 # various XPaths for competition info elements
 REGISTRATION_REQUIREMENTS = '//*[@id="registration_requirements_text"]'
 COMPETITORS_LIST = '//*[@id="competition-nav"]/div/a[3]'
 COMPETITOR_TABLE_FOOTER = '//*[@id="competition-data"]/div/div[1]/div[2]/div[2]/table/tfoot/tr/td[1]'
-ADDRESS_INPUT = '//*[@id="sb_ifc51"]/input'
-ESTIMATED_TIME = '//*[@id="section-directions-trip-#"]/div[2]/div[1]/div[1]/div[1]/span[1]'
+ADDRESS_INPUT = '//input[@placeholder=\'Choose starting point, or click on the map...\']'
+ESTIMATED_TIME = '//*[@id=\'section-directions-trip-#\']/div[2]/div[1]/div[1]/div[1]/span[1]'
+DIRECTIONS_BUTTON = '//*[@id=\'pane\']/div/div[1]/div/div/div[4]/div[1]/div/button'
 
 
-def wait_for_element(driver, attribute, attribute_name):
+def wait_for_element(driver, selector, method):
     """Returns element after waiting for page load"""
     try:
-        element = WebDriverWait(driver, 10).until(
-            eval(f'EC.presence_of_element_located((By.{attribute_name}, "{attribute}"))')
+        wait = WebDriverWait(driver, 10)
+        wait.until(
+            eval(f'EC.presence_of_element_located((By.{method}, "{selector}"))')
         )
     finally:
-        pass
+        element = eval(f'driver.find_element_by_{method.lower()}("{selector}")')
 
-    try:
-        return element
-    except UnboundLocalError:
-        return False
+    return element
 
 
 class Competition:
@@ -102,16 +102,16 @@ class Competition:
         self.driver.get(self.url)
 
         # link to venue on google maps
-        link = self.driver.find_element_by_text(self.venue_address)
+        link = self.driver.find_element_by_link_text(self.venue_address).get_attribute('href')
 
         self.driver.get(link)
 
         # click directions button
-        directions_button = wait_for_element(self.driver, 'directions', 'TEXT')
+        directions_button = wait_for_element(self.driver, DIRECTIONS_BUTTON, 'XPATH')
         directions_button.click()
 
         # send location to address input field
-        input_field = self.driver.find_element_by_xpath(ADDRESS_INPUT)
+        input_field = wait_for_element(self.driver, ADDRESS_INPUT, 'XPATH')
         input_field.send_keys(self.location)
         input_field.send_keys(Keys.ENTER)
 
@@ -149,7 +149,7 @@ class Competition:
                         test_integer = int(char)
                         mins_digits.append(char)
                     except ValueError:
-                        mins_digits.append(char)
+                        break
                 mins = int(''.join(mins_digits))
                 time_in_minutes += mins
             times_in_minutes.append(time_in_minutes)
