@@ -4,9 +4,8 @@
 pip install -r requirements.txt
 
 # start process and save PID
-# nohup python -m comp_finder.py >/dev/null 2>&1
-quick=$(ls -l)
-processInfo=$(ps -ef | grep "ls -l")
+nohup python -m comp_finder/__init__.py >/dev/null 2>&1
+processInfo=$(ps -ef | grep "__init__.py")
 i=0
 function get_pid {
   for line in $(echo $processInfo | tr " " "\n")

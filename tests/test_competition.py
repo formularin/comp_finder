@@ -20,7 +20,7 @@ def comp(file):
     return Competition(*comp_data)
 
 
-data_files = [file for file in os.listdir(f'{cwd}/tests') if '.txt' in file]
+data_files = [file for file in os.listdir(f'{cwd}/tests') if 'data.txt' in file]
 test_competitions = [comp(file) for file in data_files]
 
 class TestCompetition(unittest.TestCase):
@@ -51,9 +51,15 @@ class TestCompetition(unittest.TestCase):
             self.assertEqual(distance, comp.driving_distance)
 
     def test_message(self):
-        pass
+        
+        for file, comp in zip(
+            [file for file in os.listdir(f'{cwd}/tests') 
+                if 'message.txt' in file],
+            test_competitions):
+            
+            with open(f'{cwd}/tests/{file}', 'r') as f:
+                self.assertEqual(f.read(), str(comp))
 
 
 if __name__ == '__main__':
-    c = TestCompetition()
-    c.test_driving_distance()
+    unittest.main()
