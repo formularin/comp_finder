@@ -1,27 +1,23 @@
 #!/bin/bash
 
-# install package dependencies
-pip install -r requirements.txt
+# incorrect number of arguments given
+if [ $# != 3 ] ; then
 
-# start process and save PID
-chmod +x run.sh
-./run.sh
-processInfo=$(ps -ef | grep "run.py")
-i=0
-function get_pid {
-  for line in $(echo $processInfo | tr " " "\n")
-  do
-    if [ $i == 0 ];
-    then
-        echo $line
-    fi
-  i=$((i + 1))
-  done
-}
+  # help option
+  if [ $1 = '-h' ] || [ $1 = '--help' ] ; then
+    # script prints comp_finder docstring
+    python3 man.py
 
-PID=$(get_pid)
+  else
+    echo 'incorrect number of arguments'
+    echo 'Use -h or --help for info about usage.'
+  fi
 
-# echo PID to console and file
-echo $PID > save_pid.txt
-echo 'The PID for comp_finder.py is' $PID
-echo 'to kill the process:\nkill' $PID
+# correct number of arguments given
+else
+  # install package dependencies
+  pip3 install -r requirements.txt
+
+  # run script with arguments
+  python3 comp_finder/run.py $@
+fi
