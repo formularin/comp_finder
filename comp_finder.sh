@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # incorrect number of arguments given
-if [ $# != 3 ] ; then
+if [ "$#" != 3 ] ; then
 
   # help option
-  if [ $1 = '-h' ] || [ $1 = '--help' ] ; then
+  if [ "$1" = '-h' ] || [ "$1" = '--help' ] ; then
     # script prints comp_finder docstring
     python3 man.py
 

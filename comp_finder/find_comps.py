@@ -17,7 +17,7 @@ cwd = '/'.join(os.getcwd().split('/')[:-1])
 
 # create webdriver without physical window
 op = ChromeOptions()
-# op.add_argument('headless')
+op.add_argument('headless')
 driver = Chrome(f'{os.getcwd()}/chromedriver', options=op)
 
 
