@@ -5,24 +5,9 @@ usr = os.getcwd().split("/")[2]
 sys.path.append(f'/Users/{usr}/Desktop/comp_finder')
 
 from comp_finder.find_comps import find_comps
+import daemon
 
-import os, time
 
-def createDaemon():
-
-  try:
-    # Store the Fork PID
-    pid = os.fork()
-
-    if pid > 0:
-      print('PID: %d' % pid)
-      os._exit(0)
-
-  except OSError as error:
-    print('Unable to fork. Error: %d (%s)' % (error.errno, error.strerror))
-    os._exit(1)
-
-  main()
 
 def main():
     with open(sys.argv[3], 'r') as f:
@@ -37,6 +22,11 @@ def main():
     find_comps(sys.argv[1], states, location)
 
 
+def run():
+    with daemon.DaemonContext():
+        main()
+
+
 pid = os.getpid()
 file = f'/Users/{usr}/comp_finder_PID.txt'
 with open(file, 'w+') as f:
@@ -46,4 +36,4 @@ print('To kill this process, use the command:\nkill %s' % pid)
 print('The PID is stored in %s' % file)
 
 if __name__ == '__main__':
-    createDaemon()
+    run()
