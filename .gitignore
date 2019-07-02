@@ -9,3 +9,4 @@ test.py
 fc_venv
 test.sh
 tests
+daemon_errors.txt

@@ -1,9 +1,10 @@
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
+import time
 
 # various XPaths for competition info elements
 REGISTRATION_REQUIREMENTS = '//*[@id="registration_requirements_text"]'
@@ -108,7 +109,17 @@ class Competition:
 
         # click directions button
         directions_button = wait_for_element(self.driver, DIRECTIONS_BUTTON, 'XPATH')
-        directions_button.click()
+        i = 0
+        while i <= 10:
+            try:
+                directions_button.click()
+                break
+            except ElementNotVisibleException as e:
+                if i == 10:
+                    raise e
+                else:
+                    i += 1
+            time.sleep(1)
 
         # send location to address input field
         input_field = wait_for_element(self.driver, ADDRESS_INPUT, 'XPATH')

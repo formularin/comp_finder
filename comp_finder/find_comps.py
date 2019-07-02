@@ -12,14 +12,7 @@ import time
 
 
 PAGE_URL = 'https://www.worldcubeassociation.org/competitions?&region=USA&display=list'
-cwd = '/'.join(os.getcwd().split('/')[:-1])
-
-
-# create webdriver without physical window
-op = ChromeOptions()
-op.add_argument('headless')
-driver = Chrome(f'{os.getcwd()}/chromedriver', options=op)
-
+cwd = os.getcwd()
 
 # Various XPaths for competition info elements
 COMPETITION = '//div[@id=\'upcoming-comps\']/ul/li[@class=\'list-group-item not-past\']'
@@ -31,6 +24,12 @@ VENUE = './/div[@class="venue-link"]/p'
 def find_comps(output, states, location):
     """finds local comps every 30 mins"""
     while True:
+
+        # create webdriver without physical window
+        op = ChromeOptions()
+        op.add_argument('headless')
+        driver = Chrome(f'{cwd}/chromedriver', options=op)
+
 
         driver.get(PAGE_URL)
 
@@ -60,6 +59,8 @@ def find_comps(output, states, location):
 
         with open(output, 'w+') as f:
             f.write('\n\n'.join([str(i) for i in competitions]))
+
+        driver.quit()
 
         time.sleep(1800)
 

@@ -49,6 +49,10 @@ reached competitor limit
 ```
 If the competitor limit is not yet reached, the output will not have a line for that.
 
+comp_finder also outputs to a file called ```comp_finder_errors.txt```, where the STDERR (all the errors) 
+of the daemon process (the one running in the background) will go. 
+This file should stay empty, but if it isn't feel free to create an issue, and I'll do my best to help.
+
 ## Dependencies
 All dependencies (except python 3.x) are installed during initialization.
 The python libraries incorporated into for comp_finder are:
