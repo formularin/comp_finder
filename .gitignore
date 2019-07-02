@@ -8,3 +8,4 @@ test.py
 .vscode
 fc_venv
 test.sh
+tests

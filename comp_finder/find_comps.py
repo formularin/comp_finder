@@ -2,7 +2,7 @@ import sys
 import os
 
 cwd = os.getcwd()
-sys.path.append(f'/Users/{cwd.split("/")[2]}/Desktop/comp_finder')
+sys.path.append(cwd)
 
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.common.by import By

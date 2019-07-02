@@ -1,8 +1,9 @@
 import sys
 import os
 
-usr = os.getcwd().split("/")[2]
-sys.path.append(f'/Users/{usr}/Desktop/comp_finder')
+cwd = os.getcwd()
+
+sys.path.append(cwd)
 
 from comp_finder.find_comps import find_comps
 import daemon
@@ -28,7 +29,7 @@ def run():
 
 
 pid = os.getpid()
-file = f'/Users/{usr}/comp_finder_PID.txt'
+file = f'/Users/{cwd.split("/")[2]}/comp_finder_PID.txt'
 with open(file, 'w+') as f:
     f.write(str(pid))
 print('The PID for this process is %s' % pid)

@@ -1,5 +1,6 @@
 # comp_finder
 comp_finder is a python program that logs information about all the WCA cubing competitions in a given set of states.
+It checks the WCA website and updates the log every 30 minutes.
 
 comp_finder has only been tested on mac OS X, but should work on any Unix-based operating system. Windows support is coming soon...
 
@@ -20,6 +21,7 @@ comp_finder /path/to/output_file.txt address /path/to/states_file.txt
 ```
 
 The address is of the place you want to know the driving time to the competition from. 
+Instead of spaces it should include '-' characters.
 This can either be a standard postal service address or coordinates.
 
 ```states_file.txt``` must contain state names separated by newlines and capitalized properly.
