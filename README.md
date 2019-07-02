@@ -1,19 +1,19 @@
-# comp_finder
-comp_finder is a python program that logs information about all the WCA cubing competitions in a given set of states.
+# Comp Finder
+Comp Finder is a python program that logs information about all the WCA cubing competitions in a given set of states.
 It checks the WCA website and updates the log every 30 minutes.
 
-comp_finder has only been tested on mac OS X, but should work on any Unix-based operating system. Windows support is coming soon...
+Comp Finder has only been tested on mac OS X, but should work on any Unix-based operating system. Windows support is coming soon...
 
 ## Installation
-Use [git](https://git-scm.com/) to install comp_finder:
+Use [git](https://git-scm.com/) to install Comp Finder:
 ```bash
 git clone https://github.com/lol-cubes/comp_finder
 ```
-Use the command below to add comp_finder.sh to your ```PATH``` and create an alias for comp_finder:
+Use the command below to add comp_finder.sh to your ```PATH``` and create an alias for Comp Finder:
 ```bash
 ./initialize.sh
 ```
-This just allows you to run comp_finder from any directory and not have to use the ".sh" extesnion.
+This just allows you to run Comp Finder from any directory and not have to use the ".sh" extesnion.
 
 ## Usage
 ```bash
@@ -34,7 +34,7 @@ Arizona
 ```
 
 ## Output
-comp_finder redirects its output into the output file.
+Comp Finder redirects its output into the output file.
 The format of the output should be as depicted below:
 ```
 ====================================================================================================
@@ -49,12 +49,12 @@ reached competitor limit
 ```
 If the competitor limit is not yet reached, the output will not have a line for that.
 
-comp_finder also outputs to a file called ```comp_finder_errors.txt```, where the STDERR (all the errors) 
+Comp Finder also outputs to a file called ```comp_finder_errors.txt```, where the STDERR (all the errors) 
 of the daemon process (the one running in the background) will go. 
 This file should stay empty, but if it isn't feel free to create an issue, and I'll do my best to help.
 
 ## Dependencies
 All dependencies (except python 3.x) are installed during initialization.
-The python libraries incorporated into for comp_finder are:
+The python libraries incorporated into for Comp Finder are:
  - selenium
  - python-daemon
