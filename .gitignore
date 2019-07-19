@@ -11,3 +11,4 @@ test.sh
 tests
 daemon_errors.txt
 comp_finder_errors.txt
+.DS_Store

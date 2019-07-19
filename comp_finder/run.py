@@ -1,7 +1,6 @@
 import sys
 import os
 import daemon
-import subprocess
 
 cwd = '/'.join(os.path.abspath(os.path.dirname(__file__)).split('/')[:-1])
 if cwd not in sys.path:
@@ -31,19 +30,10 @@ def run():
         main()
 
 
-# get PID
-subprocess.run(['cd', '..'])
-subprocess.run(['chmod', '+x', 'getpid.sh'])
-pid = subprocess.check_output('./getpid.sh', shell=True).decode('UTF-8').strip()
+print('Comp Finder is running. To kill it, use the commands below:')
+print()
+print('processDetails=$(ps -ef | grep run.py)[0]\ndetailsArray=($processDetails)\npid="${detailsArray[1]}"\nkill $pid')
 
-# write PID to file and print messages
-file = f'/Users/{cwd.split("/")[2]}/comp_finder_PID.txt'
-with open(file, 'w+') as f:
-    f.write(str(pid))
-
-print('The PID for this process is %s' % pid)
-print('To kill this process, use the command:\nkill %s' % pid)
-print('The PID is stored in %s' % file)
 
 if __name__ == '__main__':
     run()

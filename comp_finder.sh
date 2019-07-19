@@ -15,7 +15,6 @@ if [ "$#" != 3 ] ; then
 
 # correct number of arguments given
 else
-
   # run script with arguments
   python3 comp_finder/run.py $@
 fi
