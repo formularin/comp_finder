@@ -15,8 +15,6 @@ if [ "$#" != 3 ] ; then
 
 # correct number of arguments given
 else
-  # install package dependencies
-  pip3 install -r requirements.txt
 
   # run script with arguments
   python3 comp_finder/run.py $@

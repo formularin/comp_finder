@@ -1,18 +1,19 @@
 import sys
 import os
+import time
 
-cwd = os.getcwd()
-sys.path.append(cwd)
+cwd = '/'.join(os.path.abspath(os.path.dirname(__file__)).split('/')[:-1])
+if cwd not in sys.path:
+    sys.path.append(cwd)
 
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
 from comp_finder.competition import Competition, wait_for_element
-import time
 
 
 PAGE_URL = 'https://www.worldcubeassociation.org/competitions?&region=USA&display=list'
-cwd = os.getcwd()
 
 # Various XPaths for competition info elements
 COMPETITION = '//div[@id=\'upcoming-comps\']/ul/li[@class=\'list-group-item not-past\']'

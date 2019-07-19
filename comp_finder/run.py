@@ -1,13 +1,13 @@
 import sys
 import os
-
-cwd = os.getcwd()
-
-sys.path.append(cwd)
-
-from comp_finder.find_comps import find_comps
 import daemon
 import subprocess
+
+cwd = '/'.join(os.path.abspath(os.path.dirname(__file__)).split('/')[:-1])
+if cwd not in sys.path:
+    sys.path.append(cwd)
+
+from comp_finder.find_comps import find_comps
 
 
 def main():
